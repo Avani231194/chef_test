@@ -21,8 +21,12 @@ git 'clone_tech' do
    user 'root'
 end
 
+file '/etc/nginx/sites-enabled/default' do
+  action :delete
+end
+
 file '/etc/nginx/sites-available/opstree.conf' do
-  content 'server {
+ content 'server {
        listen 80;
        listen [::]:80;
        root /home/vagrant/git/opstree;
@@ -31,13 +35,18 @@ file '/etc/nginx/sites-available/opstree.conf' do
        location / {
              try_files $uri $uri/ =404;
        }
-}'
+        }'
   mode '0755'
   owner 'root'
+end 
+
+link '/etc/nginx/sites-enabled/opstree.conf' do
+  to '/etc/nginx/sites-available/opstree.conf'
 end
 
+
 file '/etc/nginx/sites-available/techprimo.conf' do
-  content 'server {
+ content 'server {
        listen 80;
        listen [::]:80;
        root /home/vagrant/git/techprimo;
@@ -46,20 +55,16 @@ file '/etc/nginx/sites-available/techprimo.conf' do
        location / {
              try_files $uri $uri/ =404;
        }
-}'
+        }'
   mode '0755'
   owner 'root'
 end
 
-link '/etc/nginx/sites-available/opstree.conf' do
- to '/etc/nginx/sites-enabled/opstree.conf'  
- action :create
+link '/etc/nginx/sites-enabled/techprimo.conf' do
+  to '/etc/nginx/sites-available/techprimo.conf'
 end
 
-link '/etc/nginx/sites-available/techprimo.conf' do
- to '/etc/nginx/sites-enabled/techprimo.conf'
-  action :create
-end
+
 
 service 'nginx' do
  action :restart
