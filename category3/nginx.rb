@@ -38,6 +38,8 @@ file '/etc/nginx/sites-available/opstree.conf' do
         }'
   mode '0755'
   owner 'root'
+  action :create
+   
 end 
 
 link '/etc/nginx/sites-enabled/opstree.conf' do
@@ -58,6 +60,7 @@ file '/etc/nginx/sites-available/techprimo.conf' do
         }'
   mode '0755'
   owner 'root'
+  action :create
 end
 
 link '/etc/nginx/sites-enabled/techprimo.conf' do
